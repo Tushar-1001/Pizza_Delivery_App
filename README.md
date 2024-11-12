@@ -34,7 +34,3 @@ Follow these steps to set up and run the project locally.
 4. **Start the server with Nodemon:**   
    ```bash
     nodemon index.js
-
-
-
-
