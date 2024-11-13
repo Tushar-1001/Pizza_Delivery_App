@@ -8,9 +8,9 @@ const pizzaSchema = new mongoose.Schema(
     size_price: [
       {
         _id: false,
-        S: { type: Number, required: true },
-        M: { type: Number, required: true },
-        L: { type: Number, required: true },
+        S: { type: Number },
+        M: { type: Number },
+        L: { type: Number },
       },
     ],
   },

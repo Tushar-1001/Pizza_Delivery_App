@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-
 const userCreation = async (req, res) => {
   try {
     let requestBody = req.body;
@@ -84,7 +83,7 @@ const userCreation = async (req, res) => {
 
     //validation ends
 
-    const encryptedPassword = await bcrypt.hash(password, saltRounds); 
+    const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
     //object destructuring for response body.
     userData = {
@@ -111,20 +110,16 @@ const userCreation = async (req, res) => {
 
 const userLogin = async function (req, res) {
   try {
-
     const requestBody = req.body;
-
 
     const { email, password } = requestBody;
 
     // Validation starts
     if (!validator.isValidRequestBody(requestBody)) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Invalid request parameters. Please provide login details",
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Invalid request parameters. Please provide login details",
+      });
     }
     if (!validator.isValid(requestBody.email)) {
       return res
@@ -143,24 +138,20 @@ const userLogin = async function (req, res) {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return res
-        .status(401)
-        .send({
-          status: false,
-          message: `Login failed! email id is incorrect.`,
-        });
+      return res.status(401).send({
+        status: false,
+        message: `Login failed! email id is incorrect.`,
+      });
     }
 
     let hashedPassword = user.password;
     const encryptedPassword = await bcrypt.compare(password, hashedPassword); //converting normal password to hashed value to match it with DB's entry by using compare function.
 
     if (!encryptedPassword)
-      return res
-        .status(401)
-        .send({
-          status: false,
-          message: `Login failed! password is incorrect.`,
-        });
+      return res.status(401).send({
+        status: false,
+        message: `Login failed! password is incorrect.`,
+      });
 
     //Creating JWT token through userId.
     const userId = user._id;
@@ -182,13 +173,13 @@ const userLogin = async function (req, res) {
       },
     });
   } catch (err) {
-    return res.status(500).send({ status: false, message: err.message , "lska" : "alsk" });
+    return res
+      .status(500)
+      .send({ status: false, message: err.message, lska: "alsk" });
   }
 };
 
-
 module.exports = {
   userCreation,
-    userLogin,
-  
+  userLogin,
 };

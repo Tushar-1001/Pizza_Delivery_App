@@ -7,7 +7,6 @@ const createPizza = async (req, res) => {
   try {
     const requestBody = req.body;
 
-    
     if (!validator.isValidRequestBody(requestBody)) {
       return res.status(400).send({
         status: false,
@@ -15,10 +14,8 @@ const createPizza = async (req, res) => {
       });
     }
 
-    
     const { name, description, size_price, imageUrl } = requestBody;
 
-    
     if (!validator.isValid(name)) {
       return res.status(400).send({
         status: false,
@@ -44,24 +41,35 @@ const createPizza = async (req, res) => {
     if (!Array.isArray(size_price) || size_price.length === 0) {
       return res.status(400).send({
         status: false,
-        message: "Please provide price details for each pizza size",
+        message: "Please provide size & price details for creating pizza",
       });
     }
 
     // Validate individual prices within size_price array
     for (const size of size_price) {
-      if (
-        !size.S ||
-        !size.M ||
-        !size.L ||
-        isNaN(size.S) ||
-        isNaN(size.M) ||
-        isNaN(size.L)
-      ) {
+      const isSValid =
+        size.S !== "" && (size.S === undefined || !isNaN(size.S));
+      const isMValid =
+        size.M !== "" && (size.M === undefined || !isNaN(size.M));
+      const isLValid =
+        size.L !== "" && (size.L === undefined || !isNaN(size.L));
+
+      if (!isSValid || !isMValid || !isLValid) {
         return res.status(400).send({
           status: false,
-          message:
-            "Each size and prize (S, M, L) must have a valid numeric price",
+          message: "Pizza prices must be valid number",
+        });
+      }
+
+      const hasAtLeastOnePrice =
+        (size.S !== undefined && !isNaN(size.S)) ||
+        (size.M !== undefined && !isNaN(size.M)) ||
+        (size.L !== undefined && !isNaN(size.L));
+
+      if (!hasAtLeastOnePrice) {
+        return res.status(400).send({
+          status: false,
+          message: "Please provide at least one size (S, M, L) of pizza",
         });
       }
     }

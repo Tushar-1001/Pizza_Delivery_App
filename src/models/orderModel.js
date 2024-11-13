@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema(
           required: true,
         },
         quantity: { type: Number, required: true, min: 1 },
-        size: { type: String, required: true, enum: ["S", "M", "L"] }, 
+        size: { type: String, required: true, enum: ["S", "M", "L"] },
       },
     ],
     totalPrice: { type: Number, required: true },

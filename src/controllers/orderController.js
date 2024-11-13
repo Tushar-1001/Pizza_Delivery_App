@@ -21,7 +21,6 @@ const placeOrder = async (req, res) => {
       return res.status(404).send({ status: false, message: "User not found" });
     }
 
-
     //Authentication & authorization
     if (userExists._id.toString() != userIdFromToken) {
       res.status(401).send({
@@ -30,7 +29,6 @@ const placeOrder = async (req, res) => {
       });
       return;
     }
-    
 
     if (!pizzaItems || !Array.isArray(pizzaItems) || pizzaItems.length === 0) {
       return res
@@ -112,9 +110,6 @@ const fetchOrderDetailsbyId = async (req, res) => {
         .send({ status: false, message: "Order ID is required" });
     }
 
-    
-
-
     const order = await orderModel.findById(orderId);
 
     if (!order) {
@@ -123,8 +118,6 @@ const fetchOrderDetailsbyId = async (req, res) => {
         message: `Order with ID ${orderId} not found`,
       });
     }
-
-   
 
     return res.status(200).send({
       status: true,
@@ -144,9 +137,8 @@ const fetchOrderDetailsbyId = async (req, res) => {
 
 const getUserOrders = async (req, res) => {
   try {
-    const userId = req.params.userId; 
+    const userId = req.params.userId;
 
-    
     if (!userId) {
       return res.status(400).send({
         status: false,
@@ -155,8 +147,7 @@ const getUserOrders = async (req, res) => {
     }
 
     // Find all orders for the given userId
-    const orders = await orderModel.find({ userId })
-      
+    const orders = await orderModel.find({ userId });
 
     if (!orders || orders.length === 0) {
       return res.status(404).send({
@@ -165,7 +156,6 @@ const getUserOrders = async (req, res) => {
       });
     }
 
-    
     const formattedOrders = orders.map((order) => ({
       totalPrice: order.totalPrice,
       deliveryAddress: order.deliveryAddress,
@@ -178,7 +168,6 @@ const getUserOrders = async (req, res) => {
       })),
     }));
 
-    
     return res.status(200).send({
       status: true,
       message: "Orders fetched successfully",
